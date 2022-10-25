@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+import "k8s.io/apimachinery/pkg/runtime/generated.proto";
+
+package execute;
+option go_package = "lib/executor/";
+
+service Execute {
+    rpc ExecuteBehavior(ExecuteBehaviorMessage) returns (ExecuteBehaviorResponse) {}
+    rpc Execute (ExecuteMessage) returns (ExecuteResponse) {}
+}
+
+message ExecuteBehaviorMessage {
+}
+
+message ExecuteBehaviorResponse {
+    repeated string behavior = 1;
+}
+
+enum Kind {
+    pod = 0;
+    node = 1;
+}
+
+message ExecuteMessage {
+    string resourceName = 1;
+    Kind kind = 2;
+    string namespace = 3;
+    double exprVal = 4;
+    bool condVal = 5;
+    optional k8s.io.apimachinery.pkg.runtime.RawExtension actionData = 6;
+    string group = 7;
+    string version = 8;
+    string resources = 9;
+    string behavior = 10;
+}
+
+message ExecuteResponse {
+    string data = 1;
+}
+
+
